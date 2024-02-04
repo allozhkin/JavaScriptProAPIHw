@@ -60,8 +60,10 @@ divEl.addEventListener("click", function ({ target }) {
       alert("Группа полная");
     }
     const newCur = ++currentParticipants.textContent;
+    saveData(schedule);
     btn.disabled = true;
   }
+
 });
 divEl.addEventListener("click", function ({ target }) {
   const fatherEl = target.closest(".schedule");
@@ -69,7 +71,8 @@ divEl.addEventListener("click", function ({ target }) {
   if (target.matches(".btn-cancel")) {
     const newCur = --currentParticipants.textContent;
     target.closest(".btn-cancel").disabled = true;
-  } 
+    saveData(schedule);
+  }
 });
 
 function showSchedule(element) {

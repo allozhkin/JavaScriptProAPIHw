@@ -50,39 +50,48 @@ schedule.forEach((element) => {
   showSchedule(element);
 });
 
+const registerBtn = document.querySelectorAll(".btn-register");
+const cancelBtn = document.querySelectorAll(".btn-cancel");
+
+
 divEl.addEventListener("click", function ({ target }) {
   const fatherEl = target.closest(".schedule");
   const currentParticipants = fatherEl.querySelector(".participants-current");
   const maxParticipants = fatherEl.querySelector(".participants-max");
-  let btn = target.closest(".btn-register");
-  if (target.matches(".btn-register")) {
-    if (currentParticipants.textContent === maxParticipants.textContent) {
+  const regBtn = target.matches(".btn-register");
+  const cancelBtn = target.matches(".btn-cancel");
+  let counter = 0;
+  if (regBtn) {
+    if (currentParticipants.innerHTML != maxParticipants.innerHTML) {
+      counter = ++currentParticipants.textContent;
+      target.closest(".btn-register").disabled = true;
+    } else if (currentParticipants.innerHTML === maxParticipants.innerHTML) {
       alert("Группа полная");
     }
-    const newCur = ++currentParticipants.textContent;
-    saveData(schedule);
-    btn.disabled = true;
-  }
-
-});
-divEl.addEventListener("click", function ({ target }) {
-  const fatherEl = target.closest(".schedule");
-  const currentParticipants = fatherEl.querySelector(".participants-current");
-  if (target.matches(".btn-cancel")) {
-    const newCur = --currentParticipants.textContent;
+  } else if (cancelBtn) {
     target.closest(".btn-cancel").disabled = true;
-    saveData(schedule);
+    counter = --currentParticipants.textContent
   }
+  const resSchedule = schedule.find((item) => {
+    return item.id === +fatherEl.dataset.id;
+  });
+  resSchedule.currentParticipants = counter;
+  saveData(schedule);
 });
+
+// cancelBtn.forEach((cancel) => {
+//   cancel.disabled = true;
+// });
+
 
 function showSchedule(element) {
   divEl.insertAdjacentHTML(
     "beforeend",
     `
       <div class="schedule" data-id ="${element.id}">
-            <div class="title">название занятия: ${element.name}</div>
-            <div class="time">время проведения занятия: ${element.time}</div>
-            <div class="participants-max">максимальное количество участников: ${element.maxParticipants}</div>
+            <div class="title"> ${element.name}</div>
+            <div class="time">${element.time}</div>
+            <div class="participants-max">${element.maxParticipants}</div>
             <div class="participants-current">${element.currentParticipants}</div>
             <button class="btn-register">записаться</button>
             <button class="btn-cancel">отменить запись</button>

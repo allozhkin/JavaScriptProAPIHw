@@ -41,7 +41,7 @@ const divEl = document.querySelector(".list-schedule");
 const btnRegister = document.querySelector(".btn-register");
 const btnCancel = document.querySelector(".btn-cancel");
 
-if (!localStorage.getItem("localStorageKey")) {
+if (!localStorage.getItem(localStorageKey)) {
   localStorage.setItem(localStorageKey, initialValue);
 }
 const schedule = JSON.parse(localStorage.getItem(localStorageKey));
@@ -79,9 +79,6 @@ divEl.addEventListener("click", function ({ target }) {
   saveData(schedule);
 });
 
-// cancelBtn.forEach((cancel) => {
-//   cancel.disabled = true;
-// });
 
 
 function showSchedule(element) {
